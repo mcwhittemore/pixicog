@@ -10,16 +10,17 @@ type Pixicog []image.Image
 func (p Pixicog) At(x, y int) color.Color {
   model := p.ColorModel()
 
-  var r, g, b, a uint32 = 0, 0, 0, 0
+  var r, g, b, a uint8 = 0, 0, 0, 0
   n := uint32(len(p)) + 1
 
   for i := uint32(0); i < n - 1; i++ {
     c := model.Convert(p[i].At(x, y))
     rt, gt, bt, at := c.RGBA()
-    r += rt
-    g += gt
-    b += bt
-    a += at
+    r += uint8(rt)
+    g += uint8(gt)
+    b += uint8(bt)
+    a += uint8(at)hi:w
+
   }
 
   r = r / n
