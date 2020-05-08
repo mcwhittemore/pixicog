@@ -19,7 +19,7 @@ func (p Pixicog) At(x, y int) color.Color {
     r += uint8(rt)
     g += uint8(gt)
     b += uint8(bt)
-    a += uint8(at)hi:w
+    a += uint8(at)
 
   }
 
