@@ -1,4 +1,4 @@
-module github.com/mcwhittemore/pixicog-go/v1
+module github.com/mcwhittemore/pixicog-go
 
 go 1.12
 
