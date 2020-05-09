@@ -34,7 +34,7 @@ func TestPixicogIsAnImageInterface(t *testing.T) {
   Save(cog, t)
 }
 
-func FlatImage(width, height int, c color.RGBA) image.Image {
+func FlatImage(width, height int, c color.RGBA) *image.RGBA {
   img := image.NewRGBA(image.Rect(0,0,width,height))
 
   for x := 0; x < width; x++ {

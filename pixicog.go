@@ -5,7 +5,7 @@ import (
   "image/color"
 )
 
-type Pixicog []image.Image
+type Pixicog []*image.RGBA
 
 func (p Pixicog) At(x, y int) color.Color {
   model := p.ColorModel()
