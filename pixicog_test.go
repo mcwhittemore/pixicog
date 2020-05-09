@@ -18,17 +18,17 @@ func TestPixicogIsAnImageInterface(t *testing.T) {
   cog = append(cog, FlatImage(10, 10, black)) // black
 
   r, g, b, a := cog.At(0,0).RGBA()
-  if r != 21845 {
-		t.Fatalf("Red is incorrect. Expected 21845 but got %d", r)
+  if uint8(r) != 127 {
+		t.Fatalf("Red is incorrect. Expected 127 but got %d", uint8(r))
   }
-  if g != 21845 {
-		t.Fatalf("Green is incorrect. Expected 21845 but got %d", g)
+  if uint8(g) != 127 {
+		t.Fatalf("Green is incorrect. Expected 127 but got %d", uint8(g))
   }
-  if b != 21845 {
-		t.Fatalf("Blue is incorrect. Expected 21845 but got %d", b)
+  if uint8(b) != 127 {
+		t.Fatalf("Blue is incorrect. Expected 127 but got %d", uint8(b))
   }
-  if a != 43690 {
-		t.Fatalf("Alpha is incorrect. Expected 43690 but got %d", a)
+  if uint8(a) != 255 {
+		t.Fatalf("Alpha is incorrect. Expected 255 but got %d", uint8(a))
   }
 
   Save(cog, t)
