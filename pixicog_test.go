@@ -9,6 +9,61 @@ import (
   "image/color"
 )
 
+func TestFloatPixel(t *testing.T) {
+  cog := Pixicog{}
+  white := color.RGBA{255, 255, 255, 255};
+  black := color.RGBA{0, 0, 0, 255};
+  gray := color.RGBA{128, 128, 128, 255};
+
+  cog = append(cog, FlatImage(1, 1, white)) // white
+  cog = append(cog, FlatImage(1, 1, black)) // black
+  cog = append(cog, FlatImage(1, 1, gray)) // gray
+
+  rw, _, _, _ := cog.FloatPixel(0, 0, 0)
+  rb, _, _, _ := cog.FloatPixel(1, 0, 0)
+  rg, _, _, _ := cog.FloatPixel(2, 0, 0)
+
+  if rw != 255 {
+		t.Fatalf("White is incorrect. Expected 255 but got %f", rw)
+  }
+
+  if rb != 0 {
+		t.Fatalf("Black is incorrect. Expected 0 but got %f", rb)
+  }
+
+  if rg != 128 {
+		t.Fatalf("Gray is incorrect. Expected 128 but got %f", rg)
+  }
+
+}
+
+func TestGetDiminishedReturnsExpectedColor(t * testing.T) {
+  cog := Pixicog{}
+  white := color.RGBA{255, 255, 255, 255};
+  black := color.RGBA{0, 0, 0, 255};
+  gray := color.RGBA{128, 128, 128, 255};
+
+  cog = append(cog, FlatImage(1, 1, white)) // white
+  cog = append(cog, FlatImage(1, 1, black)) // black
+  cog = append(cog, FlatImage(1, 1, gray)) // gray
+
+  wr, _, _, _ := cog.GetDiminished(0,0,0,16).RGBA()
+  br, _, _, _ := cog.GetDiminished(1,0,0,16).RGBA()
+  gr, _, _, _ := cog.GetDiminished(2,0,0,16).RGBA()
+
+  if uint8(wr) != 240 {
+		t.Fatalf("White is incorrect. Expected 240 but got %d", uint8(wr))
+  }
+
+  if uint8(br) != 0 {
+		t.Fatalf("Black is incorrect. Expected 0 but got %d", uint8(br))
+  }
+
+  if uint8(gr) != 128 {
+		t.Fatalf("Gray is incorrect. Expected 128 but got %d", uint8(gr))
+  }
+}
+
 func TestPixicogIsAnImageInterface(t *testing.T) {
   cog := Pixicog{}
   white := color.RGBA{255, 255, 255, 255};
