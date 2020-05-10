@@ -57,19 +57,26 @@ func (p Pixicog) Bounds() image.Rectangle {
   return p[0].Bounds()
 }
 
-func (p Pixicog) GetDiminished(i, x, y, cpc int) color.Color {
-  rt, gt, bt, at := p.FloatPixel(i, x, y)
+func (p Pixicog) GetDiminished(x, y, cpc int) []color.Color {
 
-  cpc8 := uint8(cpc)
-  cpcf := float64(cpc8)
+  colors := make([]color.Color, len(p))
 
-  r := uint8(math.Floor(float64(rt) / cpcf) * cpcf)
-  g := uint8(math.Floor(float64(gt) / cpcf) * cpcf)
-  b := uint8(math.Floor(float64(bt) / cpcf) * cpcf)
-  a := uint8(math.Floor(float64(at) / cpcf) * cpcf)
+  for i := 0; i < len(p); i++ {
 
-  return color.RGBA{r,g,b,a}
+    rt, gt, bt, at := p.FloatPixel(i, x, y)
 
+    cpc8 := uint8(cpc)
+    cpcf := float64(cpc8)
+
+    r := uint8(math.Floor(float64(rt) / cpcf) * cpcf)
+    g := uint8(math.Floor(float64(gt) / cpcf) * cpcf)
+    b := uint8(math.Floor(float64(bt) / cpcf) * cpcf)
+    a := uint8(math.Floor(float64(at) / cpcf) * cpcf)
+
+    colors[i] = color.RGBA{r,g,b,a}
+  }
+
+  return colors
 }
 
 func (p Pixicog) Height() int {

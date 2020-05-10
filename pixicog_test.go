@@ -47,9 +47,10 @@ func TestGetDiminishedReturnsExpectedColor(t * testing.T) {
   cog = append(cog, FlatImage(1, 1, black)) // black
   cog = append(cog, FlatImage(1, 1, gray)) // gray
 
-  wr, _, _, _ := cog.GetDiminished(0,0,0,16).RGBA()
-  br, _, _, _ := cog.GetDiminished(1,0,0,16).RGBA()
-  gr, _, _, _ := cog.GetDiminished(2,0,0,16).RGBA()
+  colors := cog.GetDiminished(0,0,16)
+  wr, _, _, _ := colors[0].RGBA()
+  br, _, _, _ := colors[1].RGBA()
+  gr, _, _, _ := colors[2].RGBA()
 
   if uint8(wr) != 240 {
 		t.Fatalf("White is incorrect. Expected 240 but got %d", uint8(wr))
