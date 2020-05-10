@@ -22,6 +22,7 @@ func (p Pixicog) GetFloatPixels(x, y int) FloatPixels {
 }
 
 func (p Pixicog) Rotate(deg float64) Pixicog {
+  out := make(Pixicog, len(p))
 
   rad := deg * math.Pi / 180
 
@@ -29,10 +30,10 @@ func (p Pixicog) Rotate(deg float64) Pixicog {
     srcDim := p[i].Bounds()
     dstImage := image.NewRGBA(image.Rect(0, 0, srcDim.Dy(), srcDim.Dx()))
     graphics.Rotate(dstImage, p[i], &graphics.RotateOptions{rad})
-    p[i] = dstImage
+    out[i] = dstImage
   }
 
-  return p
+  return out
 }
 
 func (p Pixicog) At(x, y int) color.Color {
