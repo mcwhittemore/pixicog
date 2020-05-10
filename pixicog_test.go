@@ -9,7 +9,7 @@ import (
   "image/color"
 )
 
-func TestFloatPixel(t *testing.T) {
+func TestGetFloatPixels(t *testing.T) {
   cog := Pixicog{}
   white := color.RGBA{255, 255, 255, 255};
   black := color.RGBA{0, 0, 0, 255};
@@ -19,20 +19,18 @@ func TestFloatPixel(t *testing.T) {
   cog = append(cog, FlatImage(1, 1, black)) // black
   cog = append(cog, FlatImage(1, 1, gray)) // gray
 
-  rw, _, _, _ := cog.FloatPixel(0, 0, 0)
-  rb, _, _, _ := cog.FloatPixel(1, 0, 0)
-  rg, _, _, _ := cog.FloatPixel(2, 0, 0)
+  fps := cog.GetFloatPixels(0, 0)
 
-  if rw != 255 {
-		t.Fatalf("White is incorrect. Expected 255 but got %f", rw)
+  if fps[0][0] != 255 {
+		t.Fatalf("White is incorrect. Expected 255 but got %f", fps[0][0])
   }
 
-  if rb != 0 {
-		t.Fatalf("Black is incorrect. Expected 0 but got %f", rb)
+  if fps[1][0] != 0 {
+		t.Fatalf("Black is incorrect. Expected 0 but got %f", fps[1][0])
   }
 
-  if rg != 128 {
-		t.Fatalf("Gray is incorrect. Expected 128 but got %f", rg)
+  if fps[2][0] != 128 {
+		t.Fatalf("Gray is incorrect. Expected 128 but got %f", fps[2][0])
   }
 
 }
