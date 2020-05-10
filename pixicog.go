@@ -2,12 +2,31 @@ package pixicog
 
 import (
   "math"
+  "os"
 	"image"
+  "image/png"
+  "log"
   "image/color"
   "github.com/BurntSushi/graphics-go/graphics"
 )
 
 type Pixicog []image.Image
+
+func (img Pixicog) SavePNG(filename string) {
+  f, err := os.Create(filename)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	if err := png.Encode(f, img); err != nil {
+		f.Close()
+		log.Fatal(err)
+	}
+
+	if err := f.Close(); err != nil {
+		log.Fatal(err)
+	}
+}
 
 func (p Pixicog) GetFloatPixels(x, y int) FloatPixels {
   fps := make(FloatPixels, len(p))
