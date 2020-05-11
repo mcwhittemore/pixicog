@@ -9,7 +9,7 @@ import (
   "image/color"
 )
 
-func TestGetFloatPixels(t *testing.T) {
+func TestGetFloatPixelList(t *testing.T) {
   cog := ImageList{}
   white := color.RGBA{255, 255, 255, 255};
   black := color.RGBA{0, 0, 0, 255};
@@ -19,7 +19,7 @@ func TestGetFloatPixels(t *testing.T) {
   cog = append(cog, FlatImage(1, 1, black)) // black
   cog = append(cog, FlatImage(1, 1, gray)) // gray
 
-  fps := cog.GetFloatPixels(0, 0)
+  fps := cog.GetFloatPixelList(0, 0)
 
   if fps[0][0] != 255 {
 		t.Fatalf("White is incorrect. Expected 255 but got %f", fps[0][0])

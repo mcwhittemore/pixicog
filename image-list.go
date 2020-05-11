@@ -28,8 +28,8 @@ func (img ImageList) SavePNG(filename string) {
 	}
 }
 
-func (p ImageList) GetFloatPixels(x, y int) FloatPixels {
-  fps := make(FloatPixels, len(p))
+func (p ImageList) GetFloatPixelList(x, y int) FloatPixelList {
+  fps := make(FloatPixelList, len(p))
   model := p.ColorModel()
 
   for i := 0; i < len(p); i++ {
@@ -57,7 +57,7 @@ func (p ImageList) Rotate(deg float64) ImageList {
 
 func (p ImageList) At(x, y int) color.Color {
 
-  fps := p.GetFloatPixels(x, y)
+  fps := p.GetFloatPixelList(x, y)
   n := float32(len(p))
 
   scale := func(v float32, idx int) float32 {
@@ -77,7 +77,7 @@ func (p ImageList) Bounds() image.Rectangle {
 }
 
 func (p ImageList) GetDiminished(x, y, cpc int) []color.Color {
-  fps := p.GetFloatPixels(x, y)
+  fps := p.GetFloatPixelList(x, y)
   cpc8 := uint8(cpc)
   cpcf := float64(cpc8)
 
