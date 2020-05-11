@@ -10,7 +10,7 @@ import (
 )
 
 func TestGetFloatPixels(t *testing.T) {
-  cog := Pixicog{}
+  cog := ImageList{}
   white := color.RGBA{255, 255, 255, 255};
   black := color.RGBA{0, 0, 0, 255};
   gray := color.RGBA{128, 128, 128, 255};
@@ -36,7 +36,7 @@ func TestGetFloatPixels(t *testing.T) {
 }
 
 func TestGetDiminishedReturnsExpectedColor(t * testing.T) {
-  cog := Pixicog{}
+  cog := ImageList{}
   white := color.RGBA{255, 255, 255, 255};
   black := color.RGBA{0, 0, 0, 255};
   gray := color.RGBA{128, 128, 128, 255};
@@ -63,8 +63,8 @@ func TestGetDiminishedReturnsExpectedColor(t * testing.T) {
   }
 }
 
-func TestPixicogIsAnImageInterface(t *testing.T) {
-  cog := Pixicog{}
+func TestImageListIsAnImageInterface(t *testing.T) {
+  cog := ImageList{}
   white := color.RGBA{255, 255, 255, 255};
   black := color.RGBA{0, 0, 0, 255};
 

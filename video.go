@@ -6,9 +6,9 @@ import (
 	"io"
 )
 
-func PixicogFromVideoFileName(srcFileName string) (Pixicog, error) {
+func ImageListFromVideoFileName(srcFileName string) (ImageList, error) {
 	// this is a copy and paste from https://github.com/3d0c/gmf/blob/f4b5acb7db5cbbda9a6209be1d0de5f552823f62/examples/video-to-goImage.go
-	cog := Pixicog{}
+	cog := ImageList{}
 	var swsctx *gmf.SwsCtx
 
 	inputCtx, err := gmf.NewInputCtx(srcFileName)

@@ -2,8 +2,8 @@ package pixicog
 
 import "testing"
 
-func TestPixicogFromVideoFileNameToReturnAPixicog(t *testing.T) {
-	cog, err := PixicogFromVideoFileName("./test-fixtures/gmf-test-video.mp4")
+func TestImageListFromVideoFileNameToReturnAImageList(t *testing.T) {
+	cog, err := ImageListFromVideoFileName("./test-fixtures/gmf-test-video.mp4")
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}

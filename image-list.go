@@ -10,9 +10,9 @@ import (
   "github.com/BurntSushi/graphics-go/graphics"
 )
 
-type Pixicog []image.Image
+type ImageList []image.Image
 
-func (img Pixicog) SavePNG(filename string) {
+func (img ImageList) SavePNG(filename string) {
   f, err := os.Create(filename)
 	if err != nil {
 		log.Fatal(err)
@@ -28,7 +28,7 @@ func (img Pixicog) SavePNG(filename string) {
 	}
 }
 
-func (p Pixicog) GetFloatPixels(x, y int) FloatPixels {
+func (p ImageList) GetFloatPixels(x, y int) FloatPixels {
   fps := make(FloatPixels, len(p))
   model := p.ColorModel()
 
@@ -40,8 +40,8 @@ func (p Pixicog) GetFloatPixels(x, y int) FloatPixels {
   return fps
 }
 
-func (p Pixicog) Rotate(deg float64) Pixicog {
-  out := make(Pixicog, len(p))
+func (p ImageList) Rotate(deg float64) ImageList {
+  out := make(ImageList, len(p))
 
   rad := deg * math.Pi / 180
 
@@ -55,7 +55,7 @@ func (p Pixicog) Rotate(deg float64) Pixicog {
   return out
 }
 
-func (p Pixicog) At(x, y int) color.Color {
+func (p ImageList) At(x, y int) color.Color {
 
   fps := p.GetFloatPixels(x, y)
   n := float32(len(p))
@@ -72,11 +72,11 @@ func (p Pixicog) At(x, y int) color.Color {
   return fps.GetColor(merge)
 }
 
-func (p Pixicog) Bounds() image.Rectangle {
+func (p ImageList) Bounds() image.Rectangle {
   return p[0].Bounds()
 }
 
-func (p Pixicog) GetDiminished(x, y, cpc int) []color.Color {
+func (p ImageList) GetDiminished(x, y, cpc int) []color.Color {
   fps := p.GetFloatPixels(x, y)
   cpc8 := uint8(cpc)
   cpcf := float64(cpc8)
@@ -92,16 +92,16 @@ func (p Pixicog) GetDiminished(x, y, cpc int) []color.Color {
   return fps.GetColors(fn)
 }
 
-func (p Pixicog) Height() int {
+func (p ImageList) Height() int {
   b := p.Bounds()
   return b.Max.Y - b.Min.Y
 }
 
-func (p Pixicog) Width() int {
+func (p ImageList) Width() int {
   b := p.Bounds()
   return b.Max.X - b.Min.X
 }
 
-func (p Pixicog) ColorModel() color.Model {
+func (p ImageList) ColorModel() color.Model {
   return p[0].ColorModel()
 }
