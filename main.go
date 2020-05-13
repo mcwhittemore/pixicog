@@ -1,6 +1,7 @@
 package pixicog
 
 import (
+  "log"
   "bytes"
   "go/ast"
 	"go/parser"
@@ -33,9 +34,10 @@ func run(fn string) ([]byte, error) {
     os.Remove(tmpName)
     return nil, err
   }
+  log.Println(tmpName)
 
   msg, err := gorun(tmpName)
-  os.Remove(tmpName)
+  //os.Remove(tmpName)
   if err != nil {
     return nil, err
   }
@@ -55,52 +57,49 @@ func buildMainFile(fn string) (string, error) {
   var buf bytes.Buffer
   format.Node(&buf, fset, f)
 
-  mainStr, err := buildMainFunc(funcs)
+  mainStr := buildMainFunc(funcs)
   if err != nil {
     return "", err
   }
 
-  ctx := fmt.Sprintf("%s\n%s", buf.String(), mainStr)
+  helpers := `
+  func checkProgress(hash string, src, state pixicog.ImageList) (bool, pixicog.ImageList, pixicog.ImageList) {
+    return true, src, state
+  }
+
+  func saveProgress(hash, funcHash string, src, state pixicog.ImageList) string {
+    return hash + funcHash
+  }
+  `
+
+  ctx := fmt.Sprintf("%s\n%s\n%s", buf.String(), mainStr, helpers)
 
   return ctx, nil
 }
 
-func buildMainFunc(funcs [][]string) (string, error) {
-  params := ast.FieldList{token.NoPos,nil,token.NoPos}
-
-  statments, err := buildStmts(funcs)
-	if err != nil {
-    return "", err
-	}
-
-  funcName := ast.NewIdent("main")
-  funcType := ast.FuncType{token.NoPos,&params,nil}
-  funcBody := ast.BlockStmt{token.NoPos,statments,token.NoPos}
-
-  funcDecl := ast.FuncDecl{nil, nil, funcName, &funcType, &funcBody}
-
-  fset := token.NewFileSet()
-
-  var buf bytes.Buffer
-  err = format.Node(&buf, fset, &funcDecl)
-	if err != nil {
-    return "", err
-	}
-
-  return buf.String(), nil
+func buildMainFunc(funcs [][]string) (string) {
+  body := buildMainBody(funcs)
+  return fmt.Sprintf(`func main() {%s
+}`, body)
 }
 
-func buildStmts(funcs [][]string) (statments []ast.Stmt, err error) {
+func buildMainBody(funcs [][]string) string {
+  checkedFuncs := ""
 
-  for i := 0; i < len(funcs); i++ {
-    logExpr, _ := parser.ParseExpr(fmt.Sprintf(`fmt.Println("%s -> %s")`, funcs[0][0], funcs[0][1]))
-    statments = append(statments, &ast.ExprStmt{logExpr})
-
-    fnExpr, _ := parser.ParseExpr(fmt.Sprintf("%s()", funcs[0][0]))
-    statments = append(statments, &ast.ExprStmt{fnExpr})
+  for i := 1; i< len(funcs); i++ {
+    checkedFuncs += fmt.Sprintf(`
+    shouldRun, src, state := checkProgress(hash, src, state)
+    if shouldRun == true {
+      src, state = %s(src, state)
+    }
+    hash = saveProgress(hash, "%s", src, state)
+    `, funcs[i][0], funcs[i][1])
   }
 
-  return statments, nil
+  return fmt.Sprintf(`
+    var hash string
+    src, state := %s(nil, nil)
+    %s`, funcs[0][0], checkedFuncs);
 }
 
 func getFuncs(file *ast.File, fset *token.FileSet) [][]string {

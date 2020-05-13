@@ -1,8 +1,8 @@
 package pixicog
 
 import (
-  "fmt"
   "testing"
+  "strings"
 )
 
 func TestMain(t *testing.T) {
@@ -10,20 +10,37 @@ func TestMain(t *testing.T) {
   if err != nil {
     t.Fatalf("Unexpected error %v", err)
   }
-  exp := "torun -> d68a1f6c58ac03bb8f55ccbaaad6a37445638f14\nHello\n"
+  exp := "Hello\nWorld\n"
   if string(msg) != exp {
     t.Fatalf("Wrong message. Expected [%s]. Got [%s]", exp, msg)
   }
 }
 
 func TestBuildMainFunc(t *testing.T) {
-  funcs := [][]string{{"run", "sha"}}
+  funcs := [][]string{{"one", "onehash"}, {"two", "twohash"}, {"three", "threehash"} }
 
-  mainFunc, err := buildMainFunc(funcs)
-  if err != nil {
-    t.Fatalf("Unexpected error %v", err)
+  expected := strings.ReplaceAll(`func main() {
+    var hash string
+    src, state := one(nil, nil)
+
+    shouldRun, src, state := checkProgress(hash, src, state)
+    if shouldRun == true {
+      src, state = two(src, state)
+    }
+    hash = saveProgress(hash, "twohash", src, state)
+
+    shouldRun, src, state := checkProgress(hash, src, state)
+    if shouldRun == true {
+      src, state = three(src, state)
+    }
+    hash = saveProgress(hash, "threehash", src, state)
+
+}`, " ", "")
+
+  mainFunc := strings.ReplaceAll(buildMainFunc(funcs), " ", "")
+
+  if mainFunc != expected {
+    t.Fatalf("Wrong message. Expected [%s]. Got [%s]", expected, mainFunc)
   }
-
-  fmt.Println(mainFunc)
 }
 
